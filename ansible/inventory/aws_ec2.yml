@@ -1,0 +1,32 @@
+plugin: amazon.aws.aws_ec2
+aws_profile: default
+
+regions:
+  - "eu-central-1"
+
+strict: False
+
+keyed_groups:
+- key: tags
+  prefix: tag
+
+filters:
+  tag:Name:
+    - Worker-node-0
+    - Worker-node-1
+    - Worker-node-2
+    - Master-node-0
+    - Master-node-1
+    - Master-node-2
+  instance-state-name : running
+  
+hostnames:
+# a list in order of precedence for hostname variables.
+  - ip-address
+  - private-ip-address
+  - tag:Name
+  - dns-name
+
+
+compose:
+  ansible_host: ip-address
